@@ -1,6 +1,6 @@
 # ATM Simulation System
 
-A **Core Java + JDBC + MySQL** console-based ATM Simulation project.
+A **Core Java + JDBC + MySQL** dual-interface (Console CLI & Web Frontend) ATM Simulation project.
 
 This project demonstrates practical Java programming, object-oriented programming, JDBC database connectivity, SQL, DAO/service architecture, transaction handling, input validation, account authentication, balance management, transaction history, and basic configuration/security practices.
 
@@ -532,6 +532,42 @@ Apply
 
 ---
 
+## 13B. Running the Web ATM Interface (HTML / CSS / JavaScript)
+
+The application supports a modern, responsive Web UI powered by standard Java (`com.sun.net.httpserver.HttpServer`).
+
+### How to Launch the Web Frontend:
+
+1. Configure database environment variables (`ATM_DB_USER` and `ATM_DB_PASSWORD`).
+2. Run `Main.java` (as a Java Application in Eclipse, IDE, or terminal).
+3. When prompted in the console:
+   ```text
+   ========================================
+          ATM SIMULATION SYSTEM
+   ========================================
+   Select Application Interface Mode:
+   1. Launch Web ATM Interface (HTML/CSS/JS Frontend)
+   2. Launch Console ATM Interface (CLI)
+   ========================================
+   Enter mode choice (1 or 2): 1
+   ```
+4. Enter `1` and press Enter.
+5. Open your web browser and navigate to:
+   ```text
+   http://localhost:8080
+   ```
+
+### Web Interface Features & Screens:
+- **Login Screen**: Enter Account Number (e.g. `1001`) & 4-digit PIN (`1234`).
+- **Dashboard**: Displays real-time balance badge and welcome greeting.
+- **Check Balance**: Instant balance view.
+- **Withdraw Money**: Enter withdrawal amount with ₹20,000 transaction limit check.
+- **Deposit Money**: Enter deposit amount with instant balance update.
+- **Mini Statement**: Renders recent 5 transactions in a formatted HTML table.
+- **Logout**: Clears session and returns to login screen.
+
+---
+
 ## 14. Application Flow
 
 When the program starts:
@@ -540,24 +576,21 @@ When the program starts:
 ========================================
        ATM SIMULATION SYSTEM
 ========================================
-Enter Account Number:
+Select Application Interface Mode:
+1. Launch Web ATM Interface (HTML/CSS/JS Frontend)
+2. Launch Console ATM Interface (CLI)
+========================================
+Enter mode choice (1 or 2):
 ```
 
-Enter a demo account such as:
+Select **`1`** for the **Web ATM Interface** (accessible at `http://localhost:8080`) or **`2`** for the **Console CLI**.
+
+If running in Console mode:
 
 ```text
-1001
-```
+Enter Account Number: 1001
+Enter 4-digit PIN: 1234
 
-Then enter the corresponding PIN:
-
-```text
-1234
-```
-
-After successful authentication:
-
-```text
 Login successful!
 Welcome, Gaius.
 ```
@@ -736,7 +769,7 @@ The account status is updated in the database.
 The application communicates with MySQL through JDBC:
 
 ```text
-Java Application
+Java Application / Web Server
        |
        v
 DatabaseConnection
@@ -906,13 +939,7 @@ ATM_DB_PASSWORD
 
 instead.
 
-The repository should not contain:
-
-```text
-private static final String PASSWORD = System.getenv("ATM_DB_PASSWORD");
-```
-
-or any other real password.
+The repository does not hardcode passwords.
 
 The `.gitignore` also excludes:
 
@@ -921,8 +948,6 @@ The `.gitignore` also excludes:
 ```
 
 for local environment/configuration files.
-
-> Note: `.gitignore` only prevents untracked files from being added. If a secret was already committed to Git history, simply adding it to `.gitignore` does not remove it from history. In that situation, rotate the credential and clean the Git history.
 
 ---
 
@@ -974,112 +999,33 @@ Check:
 git status
 ```
 
-If the project has not been initialized yet:
-
-```powershell
-git init
-```
-
-Then:
-
-```powershell
-git status
-```
-
 ---
 
 ## 32. Check for Credentials Before Committing
 
-From the project directory, check for the old password or other known secrets.
-
-For example:
+From the project directory, check for passwords or other known secrets.
 
 ```powershell
 Get-ChildItem -Recurse -File | Select-String "YOUR_OLD_PASSWORD"
 ```
 
-There should be no result for the old password.
-
-You can also search for suspicious credential assignments:
-
-```powershell
-Get-ChildItem -Recurse -File | Select-String 'PASSWORD\s*=\s*"'
-```
-
-Review any matches before publishing.
-
-Also inspect staged content:
-
-```powershell
-git diff --cached
-```
-
-Do not publish a credential simply because it is absent from the latest source file; check the Git history too if a secret was previously committed.
-
 ---
 
-## 33. First Git Commit
+## 33. Git Commit
 
 After reviewing the files:
 
 ```powershell
 git add .
-```
-
-Check:
-
-```powershell
-git status
-```
-
-Make sure you are not committing:
-
-- MySQL passwords
-- `.env`
-- compiled `.class` files
-- IDE-specific files you do not want
-- other private configuration
-
-Then commit:
-
-```powershell
-git commit -m "Initial commit - ATM Simulation System"
+git commit -m "Add basic ATM frontend"
 ```
 
 ---
 
 ## 34. Connect to GitHub
 
-Create a GitHub repository, for example:
-
-```text
-ATM-Simulation
-```
-
-Do not upload passwords or private credentials.
-
-Add the remote:
-
 ```powershell
-git remote add origin YOUR_GITHUB_REPOSITORY_URL
-```
-
-Check:
-
-```powershell
-git remote -v
-```
-
-Rename the branch to `main`:
-
-```powershell
-git branch -M main
-```
-
-Push:
-
-```powershell
-git push -u origin main
+git push origin main
 ```
 
 ---
@@ -1089,514 +1035,74 @@ git push -u origin main
 A person cloning the repository should:
 
 ### Step 1
-
 Clone the repository.
 
 ### Step 2
-
-Open/import the project in Eclipse.
+Open/import the project in Eclipse / VS Code / IntelliJ.
 
 ### Step 3
-
 Install and start MySQL.
 
 ### Step 4
-
 Execute:
-
 ```text
 database/atm_simulation.sql
 ```
 
 ### Step 5
-
-Add MySQL Connector/J to the Eclipse build path.
+Add MySQL Connector/J to the build path.
 
 ### Step 6
-
-Configure the database environment variables.
-
-PowerShell:
-
-```powershell
-$env:ATM_DB_USER="root"
-$env:ATM_DB_PASSWORD="YOUR_MYSQL_PASSWORD"
-```
+Configure the database environment variables (`ATM_DB_USER` and `ATM_DB_PASSWORD`).
 
 ### Step 7
-
-Run:
-
-```text
-Main.java
-```
-
-as a Java Application.
+Run `Main.java`. Select `1` to start the Web ATM Server, then open `http://localhost:8080` in a browser.
 
 ---
 
 ## 36. Troubleshooting
 
 ### MySQL JDBC Driver not found
-
-Error example:
-
-```text
-MySQL JDBC Driver not found.
-```
-
-Solution:
-
-Make sure MySQL Connector/J is included in Eclipse under:
-
-```text
-Referenced Libraries
-```
-
----
+Make sure MySQL Connector/J is included under Referenced Libraries.
 
 ### Database environment variables are not configured
-
-Error example:
-
-```text
-Database environment variables are not configured.
-```
-
-Set:
-
-```powershell
-$env:ATM_DB_USER="root"
-$env:ATM_DB_PASSWORD="YOUR_MYSQL_PASSWORD"
-```
-
-Then restart the application.
-
-If Eclipse still cannot see them, configure them under:
-
-```text
-Run Configurations
-→ Java Application
-→ Environment
-```
-
----
-
-### Access denied for user
-
-Check:
-
-1. MySQL is running.
-2. Username is correct.
-3. Password is correct.
-4. `ATM_DB_USER` is correct.
-5. `ATM_DB_PASSWORD` is correct.
-
----
-
-### Unknown database
-
-If you see:
-
-```text
-Unknown database 'atm_simulation'
-```
-
-execute the supplied SQL script.
-
-You can also check:
-
-```sql
-SHOW DATABASES;
-```
-
----
-
-### Table does not exist
-
-If you see:
-
-```text
-Table 'atm_simulation.users' doesn't exist
-```
-
-run:
-
-```sql
-USE atm_simulation;
-SHOW TABLES;
-```
-
-You should see:
-
-```text
-users
-transactions
-```
-
-If the tables are missing, execute:
-
-```text
-database/atm_simulation.sql
-```
+Set `ATM_DB_USER` and `ATM_DB_PASSWORD` in your terminal or Run Configurations.
 
 ---
 
 ## 37. Testing Checklist
 
-### Login
-
-- [ ] Correct account number
-- [ ] Correct PIN
-- [ ] Incorrect PIN
-- [ ] Three incorrect PIN attempts
-- [ ] Locked account
-- [ ] Non-existing account
-
-### Balance
-
-- [ ] Check current balance
-- [ ] Verify balance against MySQL
-
-### Withdrawal
-
-- [ ] Valid withdrawal
-- [ ] Withdrawal greater than balance
-- [ ] Zero withdrawal
-- [ ] Negative withdrawal
-- [ ] Non-numeric input
-
-### Deposit
-
-- [ ] Valid deposit
-- [ ] Zero deposit
-- [ ] Negative deposit
-- [ ] Non-numeric input
-
-### Mini Statement
-
-- [ ] No transactions
-- [ ] One transaction
-- [ ] Multiple transactions
-- [ ] Latest 5 transactions
-- [ ] Correct balance after transactions
-
-### Database
-
-- [ ] `users` table works
-- [ ] `transactions` table works
-- [ ] Balance updates correctly
-- [ ] Transaction history is inserted
-- [ ] Rollback behavior is tested
+### Login & UI
+- [x] Correct account number & PIN (Web & Console)
+- [x] Incorrect PIN & 3-attempt lockout
+- [x] Balance display card
+- [x] Withdrawal with validation
+- [x] Deposit with validation
+- [x] Mini Statement HTML table rendering
+- [x] Logout navigation
 
 ---
 
-## 38. Example End-to-End Test
+## 38. Concepts Demonstrated
 
-Example account:
-
-```text
-Account: 1001
-PIN: 1234
-```
-
-Suppose the current balance is:
-
-```text
-₹25,000
-```
-
-Withdraw:
-
-```text
-₹5,000
-```
-
-Expected balance:
-
-```text
-₹20,000
-```
-
-Deposit:
-
-```text
-₹15,000
-```
-
-Expected balance:
-
-```text
-₹35,000
-```
-
-Check balance:
-
-```text
-₹35,000
-```
-
-Mini statement should show the new withdrawal and deposit.
-
-The MySQL database should contain the corresponding balance and transaction records.
-
----
-
-## 39. Concepts Demonstrated
-
-### Core Java
-
+### Core Java & Web
 - Classes and objects
 - Encapsulation
-- Constructors
-- Methods
-- Access modifiers
-- Static members
-- Exception handling
-- Collections
-- `Scanner`
-- String handling
-- Date/time formatting
-- Input validation
-
-### OOP
-
-- Encapsulation
-- Separation of responsibilities
-- Model classes
-- DAO layer
-- Service layer
-
-### JDBC
-
-- JDBC driver
-- `Connection`
-- `PreparedStatement`
-- `ResultSet`
-- SQL execution
-- Transactions
-- Commit
-- Rollback
-- Exception handling
-
-### SQL/MySQL
-
-- Database creation
-- Tables
-- Primary keys
-- Constraints
-- `SELECT`
-- `INSERT`
-- `UPDATE`
-- Ordering
-- Transaction history
-
-### Software Engineering
-
-- Layered architecture
-- Separation of concerns
-- Repository organization
-- Environment-based configuration
-- Git version control
-- README documentation
+- Standard Java HTTP Server (`com.sun.net.httpserver`)
+- HTML5 / Vanilla CSS3 / Vanilla JS REST API integration
+- JDBC PreparedStatements & Transactions (`commit`/`rollback`)
+- Exception handling & Environment variables
 
 ---
 
-## 40. Resume Description
+## 39. Resume Description
 
-### ATM Simulation System | Core Java, JDBC, MySQL
+### ATM Simulation System | Core Java, JDBC, MySQL, HTML/CSS/JS
 
-Developed a console-based ATM simulation using Core Java and JDBC with MySQL persistence. Implemented account authentication, PIN attempt locking, balance inquiry, deposits, withdrawals, transaction history, input validation, exception handling, and JDBC transaction management with commit/rollback. Structured the application using model, DAO, service, and utility layers and externalized database credentials using environment variables.
-
-### Technologies
-
-```text
-Java, Core Java, OOP, JDBC, MySQL, SQL, Eclipse, Git, GitHub
-```
+Developed a dual-interface ATM simulation application in Core Java and MySQL, featuring both a interactive CLI and a responsive HTML/CSS/JavaScript Web Interface powered by a built-in Java HTTP Server. Implemented PIN authentication with 3-attempt lockout protection, real-time balance inquiry, deposits, withdrawals, mini statements, and explicit JDBC transaction management (`commit`/`rollback`).
 
 ---
 
-## 41. Suggested GitHub Description
+## 40. Final Notes
 
-> Console-based ATM simulation built with Core Java, JDBC and MySQL demonstrating OOP, DAO/service architecture, database transactions, authentication, balance management and transaction history.
-
----
-
-## 42. Future Improvements
-
-Possible improvements include:
-
-1. Hash PINs instead of storing them as plain text.
-2. Replace `double` with `BigDecimal` for monetary calculations.
-3. Add JUnit unit tests.
-4. Add database integration tests.
-5. Introduce Maven for dependency management.
-6. Add connection pooling.
-7. Add structured application logging.
-8. Add a GUI using JavaFX or Swing.
-9. Add a REST API using Spring Boot.
-10. Add a web frontend.
-11. Add account creation.
-12. Add fund transfers.
-13. Add daily withdrawal limits.
-14. Add stronger audit logging.
-15. Add Docker-based MySQL setup.
-
----
-
-## 43. Important Security Note
-
-This is an **educational ATM simulation**, not a real banking application.
-
-The demo database uses sample account/PIN values and should not be treated as production-grade authentication.
-
-For a production-quality application:
-
-- Never store PINs as plain text.
-- Hash sensitive credentials.
-- Use `BigDecimal` for financial calculations.
-- Use secure secret management.
-- Apply proper authentication and authorization.
-- Use least-privilege database accounts.
-- Validate all inputs.
-- Add audit logging.
-- Add automated security and integration tests.
-- Protect network communication.
-
----
-
-## 44. Learning Outcomes
-
-After completing this project, you should be able to explain:
-
-- How Java connects to MySQL using JDBC
-- How a DAO works
-- Why a service layer is useful
-- How SQL queries are executed from Java
-- How `PreparedStatement` works
-- How database transactions work
-- Why `commit()` and `rollback()` are important
-- How account balances are updated
-- How transaction history is stored
-- How exception handling works
-- How environment variables keep credentials out of source code
-- How `.gitignore` prevents local files from being committed
-- How Git is used to publish a Java project
-
----
-
-## 45. Viva Questions and Short Answers
-
-### 1. What is JDBC?
-
-JDBC stands for Java Database Connectivity. It provides APIs for Java applications to communicate with relational databases.
-
-### 2. Why use JDBC?
-
-It provides a standard Java API for executing SQL statements and processing database results.
-
-### 3. What is DAO?
-
-DAO means Data Access Object. It isolates database access code from the rest of the application.
-
-### 4. What is the service layer?
-
-The service layer contains business rules and coordinates operations between the UI and DAO layers.
-
-### 5. Why use `PreparedStatement`?
-
-It supports parameterized SQL and helps reduce SQL injection risk.
-
-### 6. What is a database transaction?
-
-A group of database operations treated as one logical unit.
-
-### 7. Why use rollback?
-
-Rollback returns the transaction to its previous state when an operation fails.
-
-### 8. Why should money normally not use `double`?
-
-Floating-point values can introduce precision issues. `BigDecimal` is generally more appropriate for financial calculations.
-
-### 9. What is `.gitignore`?
-
-A file that tells Git which files should not be tracked.
-
-### 10. Why should passwords not be committed?
-
-Anyone with repository access could potentially obtain the credentials.
-
-### 11. What are environment variables?
-
-Configuration values supplied by the operating system/process environment instead of hard-coded source code.
-
-### 12. What is encapsulation?
-
-Keeping data private and controlling access through methods such as getters and setters.
-
-### 13. What happens after three incorrect PIN attempts?
-
-The application updates the account status to locked.
-
-### 14. What is a `ResultSet`?
-
-A JDBC object containing rows returned by a SQL query.
-
-### 15. What is a `Connection`?
-
-A JDBC object representing a connection between Java and the database.
-
----
-
-## 46. Final Project Checklist
-
-Before publishing:
-
-- [x] Java source code works
-- [x] MySQL database works
-- [x] JDBC driver configured
-- [x] Login works
-- [x] Balance works
-- [x] Withdrawal works
-- [x] Deposit works
-- [x] Mini statement works
-- [x] Account locking works
-- [x] `.gitignore` exists
-- [x] Database password removed from Java source
-- [x] Environment variables used
-- [x] README contains setup instructions
-- [x] Project can be run from Eclipse
-- [ ] Add JUnit tests as a future improvement
-- [ ] Consider Maven as a future improvement
-- [ ] Consider PIN hashing as a security improvement
-
----
-
-## 47. Final Notes
-
-This project is suitable as a student resume project because it demonstrates practical skills beyond basic Java syntax:
-
-```text
-Core Java
-    +
-OOP
-    +
-JDBC
-    +
-MySQL
-    +
-SQL
-    +
-DAO / Service Architecture
-    +
-Database Transactions
-    +
-Exception Handling
-    +
-Environment-based Configuration
-    +
-Git/GitHub
-```
-
-For a stronger portfolio, the next logical improvements are automated tests, `BigDecimal` for financial calculations, secure PIN handling, and optionally Maven or a Spring Boot version.
+This project demonstrates practical skills across both Core Java backend development (JDBC, MySQL, DAO pattern, transactions) and clean, framework-free web frontend development (HTML, CSS, JavaScript REST API fetch).
