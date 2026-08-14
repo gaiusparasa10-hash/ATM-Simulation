@@ -1,16 +1,17 @@
+import api.ATMHttpServer;
 import model.Transaction;
 import model.User;
 import service.ATMService;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 /**
- * Main Controller & Console User Interface.
- * Handles menu rendering, user inputs, validation, and delegates business operations to ATMService.
+ * Main Application Launcher.
+ * Allows users to choose between launching the Web ATM Server (HTML/CSS/JS Frontend)
+ * or the original Console-based ATM Interface.
  */
 public class Main {
 
@@ -20,7 +21,24 @@ public class Main {
 
     public static void main(String[] args) {
         printHeader("ATM SIMULATION SYSTEM");
+        System.out.println("Select Application Interface Mode:");
+        System.out.println("1. Launch Web ATM Interface (HTML/CSS/JS Frontend)");
+        System.out.println("2. Launch Console ATM Interface (CLI)");
+        System.out.println("========================================");
+        System.out.print("Enter mode choice (1 or 2): ");
 
+        String choiceInput = scanner.nextLine().trim();
+
+        if ("1".equals(choiceInput)) {
+            System.out.println("\nStarting Web ATM Server...");
+            ATMHttpServer.startServer();
+        } else {
+            System.out.println("\nStarting Console ATM Interface...\n");
+            runConsoleMode();
+        }
+    }
+
+    private static void runConsoleMode() {
         User currentUser = authenticateUser();
 
         if (currentUser != null) {
@@ -33,8 +51,6 @@ public class Main {
 
     /**
      * Handles account number entry and PIN verification with a maximum of 3 attempts.
-     *
-     * @return User object upon successful login, or null if login fails / account locked
      */
     private static User authenticateUser() {
         System.out.print("Enter Account Number: ");
@@ -50,7 +66,7 @@ public class Main {
             user = atmService.fetchUserForLogin(accountNumber);
         } catch (SQLException e) {
             System.err.println("❌ Database connection error: " + e.getMessage());
-            System.err.println("   Please check if MySQL server is running and credentials in DatabaseConnection.java are correct.");
+            System.err.println("   Please check if MySQL server is running and credentials in DatabaseConnection.java or ATM_DB_USER / ATM_DB_PASSWORD are correct.");
             return null;
         }
 
@@ -97,11 +113,6 @@ public class Main {
         return null;
     }
 
-    /**
-     * Renders the ATM Menu and processes user menu choices.
-     *
-     * @param user Authenticated user
-     */
     private static void runATMMenu(User user) {
         boolean exit = false;
 
@@ -141,9 +152,6 @@ public class Main {
         }
     }
 
-    /**
-     * Menu Option 1: Display current real-time account balance.
-     */
     private static void handleCheckBalance(User user) {
         printSubHeader("CHECK BALANCE");
         try {
@@ -155,9 +163,6 @@ public class Main {
         printDivider();
     }
 
-    /**
-     * Menu Option 2: Withdraw Money with input validation & transaction handling.
-     */
     private static void handleWithdraw(User user) {
         printSubHeader("WITHDRAW MONEY");
         System.out.print("Enter withdrawal amount: ₹");
@@ -185,9 +190,6 @@ public class Main {
         printDivider();
     }
 
-    /**
-     * Menu Option 3: Deposit Money with input validation & transaction handling.
-     */
     private static void handleDeposit(User user) {
         printSubHeader("DEPOSIT MONEY");
         System.out.print("Enter deposit amount: ₹");
@@ -215,9 +217,6 @@ public class Main {
         printDivider();
     }
 
-    /**
-     * Menu Option 4: Display Mini Statement showing last 5 transactions.
-     */
     private static void handleMiniStatement(User user) {
         printSubHeader("MINI STATEMENT");
         try {
@@ -231,7 +230,7 @@ public class Main {
 
                 for (Transaction tx : transactions) {
                     String dateStr = tx.getTransactionDate() != null ? dateFormat.format(tx.getTransactionDate()) : "N/A";
-                    System.out.printf("%-18s %-12s ₹%,14.2f ₹%,14.2f%n",
+                    System.out.printf("%-18s %-12s ₹%-14,.2f ₹%-14,.2f%n",
                             dateStr,
                             tx.getTransactionType(),
                             tx.getAmount(),
@@ -249,7 +248,6 @@ public class Main {
         printDivider();
     }
 
-    // Header & Divider Utility Methods for Clean UI Output
     private static void printHeader(String title) {
         System.out.println("\n========================================");
         System.out.printf("       %s%n", title);

@@ -8,25 +8,24 @@ This project demonstrates practical Java programming, object-oriented programmin
 
 ## 1. Project Overview
 
-The ATM Simulation System is a console application that allows a user to:
+The ATM Simulation System is a dual-interface application (Console & Web Frontend) that allows a user to:
 
 - Log in using an account number and 4-digit PIN
 - Check the current account balance
 - Withdraw money
 - Deposit money
-- View the latest 5 transactions
+- View the latest 5 transactions in a mini statement table
 - Automatically lock an account after 3 incorrect PIN attempts
 - Store account and transaction information in MySQL
 - Use JDBC for database communication
 - Use database transactions for money operations
+- Access the ATM via either an interactive Console CLI or a clean HTML/CSS/JavaScript Web Interface
 
-The project is intentionally built without Spring Boot or a frontend. It is a standalone Java console application.
+### Project Category
 
-### Project category
+> **Core Java + JDBC + MySQL + Vanilla Web UI**
 
-> **Core Java + JDBC + MySQL**
-
-It is more than a basic Core Java project because it also demonstrates database programming with JDBC and MySQL.
+It demonstrates backend database programming with JDBC and MySQL, exposed via both CLI and a lightweight standard Java HTTP Server (`com.sun.net.httpserver`).
 
 ---
 
@@ -34,15 +33,15 @@ It is more than a basic Core Java project because it also demonstrates database 
 
 | Technology | Purpose |
 |---|---|
-| Java | Application logic and OOP |
+| Java | Core application logic, OOP, and standard HTTP Server (`com.sun.net.httpserver`) |
 | Core Java | Classes, objects, encapsulation, exceptions, collections, input handling |
+| HTML5 / CSS3 / Vanilla JS | Clean, responsive ATM Web Frontend (No external frameworks) |
 | JDBC | Java-to-MySQL database communication |
 | MySQL | Persistent data storage |
 | SQL | Database schema and queries |
-| Eclipse | Development environment |
-| MySQL Workbench | Database management |
 | MySQL Connector/J | JDBC driver |
 | Git/GitHub | Version control and project hosting |
+
 
 ### Maven / `pom.xml`
 
@@ -60,7 +59,15 @@ ATM-Simulation/
 ├── database/
 │   └── atm_simulation.sql
 │
+├── frontend/
+│   ├── index.html                   # ATM Web UI Layout
+│   ├── style.css                    # Responsive Vanilla CSS Styling
+│   └── script.js                    # REST API Communication & Dynamic Views
+│
 ├── src/
+│   ├── api/
+│   │   └── ATMHttpServer.java       # Standard JDK Java HTTP API Server
+│   │
 │   ├── model/
 │   │   ├── User.java
 │   │   └── Transaction.java
@@ -89,38 +96,52 @@ ATM-Simulation/
 
 ## 4. Architecture
 
-The project follows a simple layered architecture:
+The project supports both Web and Console interfaces through a layered architecture:
 
 ```text
-                 Main.java
-                    |
-                    v
-              ATMService.java
-                    |
-             ----------------
-             |              |
-             v              v
-         UserDAO       TransactionDAO
-             |              |
-             -----------    |
-                      |      |
-                      v      v
-                  MySQL Database
-                      ^
-                      |
-             DatabaseConnection
+HTML/CSS/JavaScript Frontend (frontend/)        Console Interface (CLI)
+                    |                                     |
+                    v                                     |
+    ATMHttpServer.java (Port 8080)                        |
+                    |                                     |
+                    +------------------+------------------+
+                                       |
+                                       v
+                                ATMService.java
+                                       |
+                                ----------------
+                                |              |
+                                v              v
+                            UserDAO       TransactionDAO
+                                |              |
+                                -----------    |
+                                         |      |
+                                         v      v
+                                     MySQL Database
+                                         ^
+                                         |
+                                DatabaseConnection
 ```
 
 ### Responsibilities
 
-#### `Main.java`
-
+#### `frontend/` (HTML / CSS / JavaScript)
 Responsible for:
+- User interface rendering (Login, Dashboard, Balance, Withdraw, Deposit, Mini Statement)
+- Capturing user actions and making async `fetch()` API calls to `/api/...` endpoints
+- Session state tracking (`sessionStorage`) and DOM updates
 
-- Console user interface
-- Reading input
-- Displaying menus
-- Input validation
+#### `ATMHttpServer.java`
+Responsible for:
+- Running standard JDK HTTP server on port 8080
+- Serving static frontend web assets (`index.html`, `style.css`, `script.js`)
+- Exposing REST API endpoints (`/api/login`, `/api/balance`, `/api/withdraw`, `/api/deposit`, `/api/ministatement`)
+- Delegating API requests to `ATMService.java`
+
+#### `Main.java`
+Responsible for:
+- Application launcher (prompts user to choose Web ATM Server mode or Console CLI mode)
+- Console menu interface & interactive user inputs when in CLI mode
 - Calling the service layer
 - Displaying results
 

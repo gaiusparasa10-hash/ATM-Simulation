@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Simulation System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="atm-container">
+        <!-- HEADER -->
+        <header class="atm-header">
+            <div class="bank-logo">🏧</div>
+            <h1>ATM SIMULATION SYSTEM</h1>
+        </header>
+
+        <!-- ALERT BANNER -->
+        <div id="alert-banner" class="alert-banner hidden"></div>
+
+        <!-- 1. LOGIN SCREEN -->
+        <section id="login-screen" class="screen">
+            <div class="card login-card">
+                <h2>Account Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="account-number">Account Number</label>
+                        <input type="text" id="account-number" placeholder="Enter Account Number (e.g. 1001)" required autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="pin">4-Digit PIN</label>
+                        <input type="password" id="pin" placeholder="Enter PIN (e.g. 1234)" maxlength="6" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">LOGIN</button>
+                </form>
+                <div class="demo-credentials">
+                    <p><strong>Demo Accounts:</strong> Account <code>1001</code> (PIN <code>1234</code>) | Account <code>1002</code> (PIN <code>4321</code>)</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ATM DASHBOARD SCREEN -->
+        <section id="dashboard-screen" class="screen hidden">
+            <!-- USER WELCOME CARD -->
+            <div class="card welcome-card">
+                <div class="user-info">
+                    <h2 id="welcome-message">Welcome, User</h2>
+                    <p>Account Number: <span id="user-acc-num">----</span></p>
+                </div>
+                <div class="balance-badge">
+                    <span class="badge-label">Available Balance</span>
+                    <h3 id="dashboard-balance">₹0.00</h3>
+                </div>
+            </div>
+
+            <!-- DASHBOARD MENU BUTTONS -->
+            <div class="menu-grid">
+                <button class="menu-btn" onclick="showView('balance-view')">
+                    <span class="icon">💰</span>
+                    <span class="label">Check Balance</span>
+                </button>
+                <button class="menu-btn" onclick="showView('withdraw-view')">
+                    <span class="icon">💸</span>
+                    <span class="label">Withdraw Money</span>
+                </button>
+                <button class="menu-btn" onclick="showView('deposit-view')">
+                    <span class="icon">💵</span>
+                    <span class="label">Deposit Money</span>
+                </button>
+                <button class="menu-btn" onclick="showView('statement-view')">
+                    <span class="icon">📜</span>
+                    <span class="label">Mini Statement</span>
+                </button>
+            </div>
+
+            <!-- DYNAMIC DASHBOARD VIEWS -->
+            
+            <!-- VIEW A: BALANCE -->
+            <div id="balance-view" class="card action-view hidden">
+                <h3>Current Account Balance</h3>
+                <div class="big-balance" id="view-balance-amount">₹0.00</div>
+                <button class="btn btn-secondary" onclick="hideViews()">Back to Menu</button>
+            </div>
+
+            <!-- VIEW B: WITHDRAW -->
+            <div id="withdraw-view" class="card action-view hidden">
+                <h3>Withdraw Money</h3>
+                <form id="withdraw-form">
+                    <div class="form-group">
+                        <label for="withdraw-amount">Amount (₹)</label>
+                        <input type="number" id="withdraw-amount" placeholder="Enter amount (e.g. 5000)" min="1" step="100" required>
+                        <small class="help-text">Maximum single withdrawal limit: ₹20,000.00</small>
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">Withdraw</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideViews()">Back</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- VIEW C: DEPOSIT -->
+            <div id="deposit-view" class="card action-view hidden">
+                <h3>Deposit Money</h3>
+                <form id="deposit-form">
+                    <div class="form-group">
+                        <label for="deposit-amount">Amount (₹)</label>
+                        <input type="number" id="deposit-amount" placeholder="Enter amount (e.g. 3000)" min="1" step="100" required>
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">Deposit</button>
+                        <button type="button" class="btn btn-secondary" onclick="hideViews()">Back</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- VIEW D: MINI STATEMENT -->
+            <div id="statement-view" class="card action-view hidden">
+                <h3>Mini Statement (Latest Transactions)</h3>
+                <div class="table-responsive">
+                    <table class="statement-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Type</th>
+                                <th>Amount (₹)</th>
+                                <th>Balance After (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="statement-body">
+                            <tr>
+                                <td colspan="4" class="text-center">Loading transactions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="statement-footer">
+                    <button class="btn btn-secondary" onclick="hideViews()">Back to Menu</button>
+                </div>
+            </div>
+
+            <!-- LOGOUT BUTTON -->
+            <div class="logout-container">
+                <button class="btn btn-danger btn-block" onclick="logout()">LOGOUT</button>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="atm-footer">
+            <p>ATM Simulation System &copy; Core Java + JDBC + MySQL</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
