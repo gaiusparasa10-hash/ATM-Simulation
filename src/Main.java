@@ -20,24 +20,9 @@ public class Main {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
 
     public static void main(String[] args) {
-        printHeader("ATM SIMULATION SYSTEM");
-        System.out.println("Select Application Interface Mode:");
-        System.out.println("1. Launch Web ATM Interface (HTML/CSS/JS Frontend)");
-        System.out.println("2. Launch Console ATM Interface (CLI)");
-        System.out.println("========================================");
-        System.out.print("Enter mode choice (1 or 2): ");
-
-        String choiceInput = scanner.nextLine().trim();
-
-        if ("1".equals(choiceInput)) {
-            System.out.println("\nStarting Web ATM Server...");
-            ATMHttpServer.startServer();
-        } else {
-            System.out.println("\nStarting Console ATM Interface...\n");
-            runConsoleMode();
-        }
+        System.out.println("Starting Web ATM Server...");
+        ATMHttpServer.startServer();
     }
-
     private static void runConsoleMode() {
         User currentUser = authenticateUser();
 
