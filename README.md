@@ -9,13 +9,12 @@ A dual-interface (**Console CLI** & **Web Frontend**) ATM Simulation application
 
 ---
 
-## 🚀 Live Demo
+## 🚀 Live Demo & Credentials
 
 **[Live Demo](https://atm-simulation-cgua.onrender.com)**
 
 > ℹ️ *Deployed on Render free tier. Initial request may take a few seconds if service is sleeping.*
 
-Credentials
 ### Demo Accounts
 
 | Account Number | 4-Digit PIN | Account Holder | Initial Balance |
