@@ -4,10 +4,9 @@ A **Core Java + JDBC + MySQL** ATM simulation with a responsive
 **HTML/CSS/Vanilla JavaScript** web interface.
 
 The project intentionally uses **Core Java only**. It uses Java's built-in `HttpServer`, JDBC, DAO/service architecture, MySQL transactions, Docker, Render, and Aiven.
-
 ## 🚀 Live Demo
 
-**Live application:** https://atm-simulation-cgua.onrender.com
+**[Live Demo](https://atm-simulation-cgua.onrender.com)**
 
 > The demo uses free-tier services. The first request after inactivity
 > may take longer because the Render service can spin down.
